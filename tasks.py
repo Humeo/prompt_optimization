@@ -16,7 +16,6 @@ class DataProcessor(ABC):
     def get_train_examples(self):
         pass
 
-
     @abstractmethod
     def get_test_examples(self):
         pass
@@ -43,13 +42,20 @@ class ClassificationTask(DataProcessor):
         labels = []
         preds = []
         texts = []
-        with concurrent.futures.ProcessPoolExecutor(max_workers=self.max_threads) as executor:
-            futures = [executor.submit(process_example, ex, predictor, prompt) for ex in test_exs[:n]]
-            for i, future in tqdm(enumerate(concurrent.futures.as_completed(futures)), total=len(futures), desc='running evaluate'):
-                ex, pred = future.result()
-                texts.append(ex['text'])
-                labels.append(ex['label'])
-                preds.append(pred)
+
+        for ex in test_exs[:n]:
+            ex, pred = process_example(ex, predictor, prompt)
+            texts.append(ex['text'])
+            labels.append(ex['label'])
+            preds.append(pred)
+
+        # with concurrent.futures.ProcessPoolExecutor(max_workers=self.max_threads) as executor:
+        #     futures = [executor.submit(process_example, ex, predictor, prompt) for ex in test_exs[:n]]
+        #     for i, future in tqdm(enumerate(concurrent.futures.as_completed(futures)), total=len(futures), desc='running evaluate'):
+        #         ex, pred = future.result()
+        #         texts.append(ex['text'])
+        #         labels.append(ex['label'])
+        #         preds.append(pred)
 
         accuracy = accuracy_score(labels, preds)
         f1 = f1_score(labels, preds, average='micro')
@@ -128,3 +134,25 @@ class DefaultHFBinaryTask(BinaryClassificationTask):
             row = json.loads(row.strip())
             exs.append({'id': f'test-{i}', 'label': row['label'], 'text': row['text']})
         return exs
+
+
+class AttackTrafficClassificationTask(ClassificationTask):
+
+    categories = ['SUCCESS', 'FAILURE', "UNKNOWN"]
+
+    def get_train_examples(self):
+        exs = []
+        for i, row in enumerate(open(self.data_dir + '/train.csv')):
+            row = json.loads(row.strip())
+            exs.append({'uuid': row['uuid'], 'label': row['label'], 'req': row['req'], 'rsp': row['rsp']})
+        return exs
+
+    def get_test_examples(self):
+        exs = []
+        for i, row in enumerate(open(self.data_dir + '/test.jsonl')):
+            row = json.loads(row.strip())
+            exs.append({'id': f'test-{i}', 'label': row['label'], 'text': row['text']})
+        return exs
+
+    def stringify_prediction(self, pred):
+        pass

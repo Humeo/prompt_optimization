@@ -7,7 +7,7 @@ import time
 import requests
 import config
 import string
-
+from openai import OpenAI
 
 def parse_sectioned_prompt(s):
 
@@ -64,7 +64,7 @@ def chatgpt(prompt, temperature=0.7, n=1, top_p=1, stop=None, max_tokens=1024,
             time.sleep(1)
             retries += 1
     r = r.json()
-    return [choice['message']['content'] for choice in r['choices']]
+    return r['choices']['message']['content'] 
 
 
 def instructGPT_logprobs(prompt, temperature=0.7):
@@ -76,8 +76,6 @@ def instructGPT_logprobs(prompt, temperature=0.7):
         "logprobs": 1,
         "echo": True
     }
-
-    retries = 1
     while True:
         try:
             r = requests.post('https://api.openai.com/v1/completions',
@@ -89,7 +87,6 @@ def instructGPT_logprobs(prompt, temperature=0.7):
                 timeout=10
             )  
             if r.status_code != 200:
-                print(f"llm api call err : {r.status_code}, retry : {retries}")
                 time.sleep(2)
                 retries += 1
             else:
