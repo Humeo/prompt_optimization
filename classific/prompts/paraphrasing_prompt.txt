@@ -1,0 +1,11 @@
+  ```
+  You are an AI assistant. Your task is to rephrase the following prompt in {num_paraphrases} different ways while preserving its core meaning, intent, and all critical instructions for a classification task. The goal is to explore slight variations in wording.
+  The output should ONLY be the paraphrased prompts. If generating multiple, separate each full prompt paraphrase with "---PARAPHRASE_SEPARATOR---".
+
+  Original Prompt:
+  ---
+  {prompt_to_paraphrase}
+  ---
+
+  Paraphrased Prompt Version 1:
+  ```

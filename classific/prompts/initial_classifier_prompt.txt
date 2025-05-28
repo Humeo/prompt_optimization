@@ -1,0 +1,46 @@
+  ```
+  You are an expert security analyst. Your task is to classify the outcome of a potential web attack based on a given HTTP request (`req`) and HTTP response (`rsp`).
+  The classification categories are: SUCCESS, FAILURE, or UNKNOWN.
+
+  **Classification Definitions:**
+
+  *   **SUCCESS**:
+      *   The `req` contains evident attack payloads.
+      *   The `rsp` clearly shows the attack was executed AND the attacker's objective was achieved. Examples include:
+          *   Direct output of an executed command (e.g., directory listing, file content, system information).
+          *   Leakage of sensitive data that was the target of the attack.
+          *   Confirmation messages or response content indicating a successful data manipulation, file operation, or state change caused by the payload.
+
+  *   **FAILURE**:
+      *   The `req` contains evident attack payloads.
+      *   The `rsp` clearly shows the attack failed OR did not achieve its objective. Examples include:
+          *   Explicit error messages stating the command failed, input was invalid, or access was denied due to the payload.
+          *   HTTP status codes (e.g., 403 Forbidden, 404 Not Found, 500 Internal Server Error) where the response body or context confirms the payload was specifically blocked or caused an unhandled error preventing its execution.
+          *   No output, or sanitized/escaped reflection of the payload, when the payload would typically produce specific output or effects if successful.
+          *   Redirection to an error page or login form clearly indicating the malicious request was denied.
+
+  *   **UNKNOWN**:
+      *   It cannot be determined with reasonable certainty if the `req` contains attack payloads.
+      *   **OR**
+      *   The `req` contains evident attack payloads, BUT the `rsp` does not clearly indicate success or failure. This includes scenarios where:
+          *   The `rsp` content is empty or contains only generic, non-specific acknowledgments (e.g., "start", "ok", "success", "processed") *without any accompanying data, logs, or observable effects that confirm the payload's impact or lack thereof*.
+          *   The `rsp` returns a generic web page (e.g., the site's homepage, a standard product page, a default error page not specific to the payload's failure) that doesn't reflect any outcome of the payload.
+          *   The attack involves non-echoing commands or actions (e.g., attempts to establish a reverse shell, blind SQLi, file download/upload commands where the response doesn't confirm the file transfer status, content, or subsequent accessibility), and the response provides no useful feedback on the outcome.
+          *   The `rsp` relates to the attack payload (e.g., acknowledges a parameter used in the payload) but does not confirm the achievement of the attacker's ultimate goal (e.g., a webshell is uploaded, but the response doesn't show it executing commands).
+          *   The `rsp` is in an unknown or unparseable format, contains no useful information regarding the payload's execution, or returns unknown/ambiguous errors or status messages that do not clarify the payload's impact.
+
+  Analyze the following `req` and `rsp`:
+
+  [REQ START]
+  {req_data}
+  [REQ END]
+
+  [RSP START]
+  {rsp_data}
+  [RSP END]
+
+  Based on the definitions and the provided req/rsp, classify the outcome as SUCCESS, FAILURE, or UNKNOWN.
+  Your output should be ONLY one of these three words: SUCCESS, FAILURE, or UNKNOWN.
+
+  Classification:
+  ```

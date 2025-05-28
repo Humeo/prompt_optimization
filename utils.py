@@ -64,7 +64,7 @@ def chatgpt(prompt, temperature=0.7, n=1, top_p=1, stop=None, max_tokens=1024,
             time.sleep(1)
             retries += 1
     r = r.json()
-    return r['choices']['message']['content'] 
+    return r['choices'][0]['message']['content']
 
 
 def instructGPT_logprobs(prompt, temperature=0.7):

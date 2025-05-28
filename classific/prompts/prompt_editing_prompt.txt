@@ -1,0 +1,21 @@
+ ```
+  You are an AI assistant tasked with editing a prompt used for classifying web attack outcomes.
+  The original classification prompt is:
+  ---
+  {current_classification_prompt}
+  ---
+
+  A "textual gradient" (a description of a flaw in the original prompt) has been identified:
+  ---
+  {textual_gradient}
+  ---
+
+  Your task is to rewrite the "original classification prompt" to address the flaw described in the "textual_gradient".
+  The new prompt should still perform the same 3-class classification (SUCCESS, FAILURE, UNKNOWN) using the same input format (req, rsp) and output format (SUCCESS, FAILURE, or UNKNOWN).
+  The goal is to make the prompt more precise and effective based on the identified flaw.
+  Ensure the core classification definitions are preserved or clarified, not removed.
+  The new prompt should be a complete, standalone prompt.
+
+
+  Improved Prompt Version :
+  ```

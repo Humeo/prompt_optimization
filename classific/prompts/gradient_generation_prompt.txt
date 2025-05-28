@@ -1,0 +1,22 @@
+ ```
+  You are an AI assistant tasked with improving a prompt used for classifying web attack outcomes.
+  The current classification prompt is:
+  ---
+  {current_classification_prompt}
+  ---
+
+  This prompt was used to classify the following examples, but it made mistakes:
+  {error_examples_string}
+
+  Each error example above shows the Request (req), Response (rsp), the True Label, and the Incorrect Predicted Label by the current classification prompt.
+
+  Your goal is to generate a concise "textual gradient" that describes the flaws in the "current classification prompt" that likely led to these errors.
+  Focus on *how the classification prompt itself could be improved*.
+  Do NOT try to re-classify the examples.
+  Do NOT suggest specific edits, but rather describe the *problem* with the current classification prompt.
+  For example, if the prompt led to misclassifying a clear "SUCCESS" as "UNKNOWN", a flaw might be "The prompt's definition of UNKNOWN is too broad and catches cases where success indicators are present but subtle, or the prompt doesn't sufficiently emphasize looking for execution artifacts for SUCCESS."
+  Another example: "The prompt might be over-relying on specific keywords for FAILURE and missing cases where the response implicitly indicates failure without those keywords."
+
+  Provide {num_gradients} distinct textual gradients, each on a new line.
+  Textual Gradients:
+  ```
