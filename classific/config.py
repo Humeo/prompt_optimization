@@ -27,7 +27,7 @@ metric_type = 'f1_macro' # 'f1_weighted', 'accuracy'
 
 # ProTeGi Algorithm Parameters
 beam_width = 3
-beam_expand = 5
+beam_expand = 2
 search_depth = 5 # Number of optimization iterations
 minibatch_size_for_errors = 100 # For Algorithm 2, line 1
 num_gradients_to_generate = 4  # 'm' in paper's Algorithm 2, line 3 (number of g_i)

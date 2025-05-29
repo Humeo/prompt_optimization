@@ -119,7 +119,7 @@ def expand_single_prompt(prompt_candidate, Dtr_train_df, config_obj):
 
     # 3. Edit prompt using gradients (LLM_edit)
     if textual_gradients:
-        for _ in range(config.beam_width):
+        for _ in range(config.beam_expand):
             try:
                 llm_output = llm_wrappers.edit_prompt_with_gradient(
                     original_prompt=prompt_candidate,
@@ -320,7 +320,7 @@ def run_protegi(initial_prompt, Dtr_train_df, config_obj):
 
                 result_eval.append((score, candidate))
 
-            result_eval = sorted(result_eval, key=lambda item: item[0])[:config.beam_width]
+            result_eval = sorted(result_eval, key=lambda item: item[0], reverse=True)[:config.beam_width]
 
 
             with open(f"results/beam_{i}.json", "w") as f:
